@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "brain.js": "^1.6.0",
     "pandas": "^0.0.3"
   }
 }
