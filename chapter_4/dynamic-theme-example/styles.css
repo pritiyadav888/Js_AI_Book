@@ -1,0 +1,23 @@
+/* Default Styles (Applied if no theme is selected) */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+  
+  /* Light Theme */
+  .light {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  /* Dark Theme */
+  .dark {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  /* Blue Theme */
+  .blue {
+    background-color: #4285f4; /* Google Blue */
+    color: #fff;
+  }

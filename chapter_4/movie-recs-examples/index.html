@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Movie Recommendations</title>
+</head>
+<body>
+  <div id="recommendations"></div>  <!-- Container for recommendations -->
+  <script>
+    const movieData = {
+        movies: [
+            { id: 'A', title: 'Action Movie', genre: ['Action', 'Adventure'] },
+            { id: 'B', title: 'Comedy Movie', genre: ['Comedy', 'Romance'] },
+            { id: 'C', title: 'Sci-Fi Movie', genre: ['Sci-Fi', 'Thriller'] },
+            { id: 'D', title: 'Another Action Movie', genre: ['Action', 'Thriller'] },
+            { id: 'E', title: 'Romantic Comedy', genre: ['Comedy', 'Romance'] }
+        ],
+        user: {
+            'user1': ['A', 'B'] //Movies user1 liked
+        }
+    };
+
+    function recommendMovies(userId) {
+        // ... (rest of the recommendMovies function remains unchanged)
+    }
+
+    const recommendations = recommendMovies('user1'); // Get recommendations
+    const recommendationsDiv = document.getElementById('recommendations'); // Get the div
+
+    if (typeof recommendations === 'string') { //Handle the case where no movies are liked
+        recommendationsDiv.innerHTML = `<p>${recommendations}</p>`;
+    } else {
+        let recommendationHTML = '<ul>';
+        recommendations.forEach(movie => {
+            recommendationHTML += `<li>ID: ${movie.id}, Title: ${movie.title}, Matching Genres: ${movie.matchingGenres.join(', ')}</li>`;
+        });
+        recommendationHTML += '</ul>';
+        recommendationsDiv.innerHTML = recommendationHTML;
+    }
+
+
+  </script>
+</body>
+</html>

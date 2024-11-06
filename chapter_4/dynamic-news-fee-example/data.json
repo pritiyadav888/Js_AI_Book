@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "title": "Tech Innovation in 2024",
+        "category": "technology",
+        "popularity": 0.9
+    },
+    {
+        "id": 2,
+        "title": "Advances in Climate Science",
+        "category": "science",
+        "popularity": 0.8
+    },
+    {
+        "id": 3,
+        "title": "New Action Movies to Watch",
+        "category": "entertainment",
+        "popularity": 0.6
+    },
+    {
+        "id": 4,
+        "title": "Global Economic Trends for the Next Decade",
+        "category": "finance",
+        "popularity": 0.75
+    },
+    {
+        "id": 5,
+        "title": "Breakthroughs in Artificial Intelligence",
+        "category": "technology",
+        "popularity": 0.85
+    },
+    {
+        "id": 6,
+        "title": "Exploring the Universe: New Discoveries in Space",
+        "category": "science",
+        "popularity": 0.7
+    },
+    {
+        "id": 7,
+        "title": "Top 10 Health Trends in 2024",
+        "category": "health",
+        "popularity": 0.65
+    },
+    {
+        "id": 8,
+        "title": "Fashion Forward: Trends for the Upcoming Season",
+        "category": "fashion",
+        "popularity": 0.5
+    },
+    {
+        "id": 9,
+        "title": "The Rise of Electric Vehicles",
+        "category": "technology",
+        "popularity": 0.78
+    },
+    {
+        "id": 10,
+        "title": "The Impact of Social Media on Mental Health",
+        "category": "health",
+        "popularity": 0.6
+    }
+]
