@@ -1,0 +1,20 @@
+body {
+    font-family: sans-serif;
+  }
+  
+  #ab-test-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  #group-indicator {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .news-article {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }

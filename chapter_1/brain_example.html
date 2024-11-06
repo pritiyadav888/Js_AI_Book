@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain.js Neural Network Training (Browser)</title>
+    <script src="https://cdn.jsdelivr.net/npm/brain.js"></script> <!-- Load Brain.js from CDN -->
+</head>
+<body>
+    <h1>Music Genre Classifier using Brain.js in the Browser</h1>
+    <p>Open the browser console to see the training and prediction results.</p>
+    
+    <script>
+        // Create a new LSTM (Long Short-Term Memory) network for sequential data (like text)
+        const network = new brain.recurrent.LSTM();
+
+        // Training data for the network with string outputs instead of objects
+        const trainingData = [
+            { input: 'fast beat and loud guitars', output: 'rock' },
+            { input: 'smooth saxophone and slow tempo', output: 'jazz' },
+            { input: 'synthesizers and strong bass line', output: 'electronic' },
+            { input: 'acoustic guitar and soft vocals', output: 'folk' },
+            { input: 'heavy drums and distorted guitars', output: 'metal' },
+            { input: 'piano and strings', output: 'classical' },
+            { input: 'trumpets and quick rhythm', output: 'salsa' },
+            { input: 'rhythmic beats and rapping', output: 'hiphop' }
+        ];
+
+        // Training options
+        const trainingOptions = {
+            iterations: 1000,      // Number of training iterations
+            log: true,             // Log progress to the console
+            errorThresh: 0.005,    // Stop training once error falls below this threshold
+            logPeriod: 10,         // Log training progress every 10 iterations
+            learningRate: 0.01     // Learning rate for training
+        };
+
+        // Train the network
+        console.log('Training started...');
+        network.train(trainingData, trainingOptions);
+        console.log('Training completed!');
+
+        // Test data for genre classification
+        const testDescriptions = [
+            'heavy drums and quick rhythm',
+            'smooth jazz with a saxophone solo',
+            'fast-paced electronic music',
+            'soft acoustic guitar and vocals',
+            'a song with piano and strings',
+            'random noise'
+        ];
+
+        // Classify each test description and log the results
+        testDescriptions.forEach(description => {
+            // Get the prediction result from the network
+            const result = network.run(description);
+
+            // Log the result to the console
+            console.log(`Description: "${description}"`);
+            console.log(`Most Likely Genre: ${result}`);
+            console.log('--------------------');
+        });
+    </script>
+</body>
+</html>
