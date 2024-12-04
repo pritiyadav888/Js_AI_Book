@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+    input { width:50%;}
+    .progress-container { display: flex; align-items: center; margin: 10px 0;}
+    .progress-text { flex: 1; font-size: 14px; padding-right: 10px;}
+    .progress-bar { flex: 3; height: 20px; background: #f3f3f3; border: 1px solid #333; border-radius: 5px; overflow: hidden;}
+    .progress-bar-fill { height: 100%; background: #4caf50; transition: width 0.3s ease;}
+    </style>
+</head>
+<body>
+    <label for="userInput">Enter a sentence:</label>
+    <input id="userInput" type="text" placeholder="Type something..." >
+    <button id="btn">Generate</button>
+    <div id="output">
+    <p id="aiOutput">Waiting...</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+const elements = {
+    userInput: document.getElementById('userInput'),
+    btn: document.getElementById('btn'),
+    aiOutput: document.getElementById('aiOutput'),
+};
+const labelColorMap = { positive: '#4caf50', neutral: '#2196f3', negative: '#f44336' };
+const apiEndpoint = 'http://localhost:3000/api/generate';
+elements.btn.addEventListener('click', async () => {
+    const prompt = elements.userInput.value;
+    if (!prompt) return (elements.aiOutput.textContent = 'Please enter a prompt!');
+    elements.aiOutput.textContent = 'Loading response...';
+    try {
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt }),
+        });
+        if (!response.ok) throw new Error('Failed to fetch AI response');
+        const data = await response.json();
+        elements.aiOutput.innerHTML = `<h2>${prompt}</h2>`;
+        data[0].forEach(res => {
+            const progressBarHTML = `
+                <div class="progress-container">
+                    <div class="progress-text">${res.label} (${Math.round(res.score * 100)}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="
+                            background-color: ${labelColorMap[res.label]};
+                            width: ${Math.round(res.score * 100)}%;
+                        "></div>
+                    </div>
+                </div>`;
+            elements.aiOutput.insertAdjacentHTML('beforeend', progressBarHTML);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        elements.aiOutput.textContent = 'An error occurred. Please try again later.';
+    }
+});
+
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import fetch from 'node-fetch';
+const app = express();
+const PORT = process.env.PORT || 3000;
+const API_URL = 'https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment-latest';
+const API_KEY = 'hf_****';
+app.use(express.static('public'));
+app.use(cors());
+app.use(bodyParser.json());
+app.post('/api/generate', async (req, res) => {
+    const { prompt } = req.body;
+    if (!prompt) return res.status(400).json({ error: 'Prompt is required.' });
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ inputs: prompt }),
+        });
+        if (!response.ok) throw new Error('Failed to fetch AI data');
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+app.listen(PORT, () => console.log(`Server http://localhost:${PORT}`));
