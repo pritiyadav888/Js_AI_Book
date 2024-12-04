@@ -1,0 +1,52 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const path = require('path');
+const app = express();
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+app.post('/api/ai', async (req, res) => {
+    const userPrompt = req.body.prompt; 
+    try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(userPrompt);
+        res.json({ response: result.response.text() });
+    } catch (error) {
+        console.error("Error generating content:", error);
+        res.status(500).json({ error: 'An error occurred while processing your request.' });
+    }
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
+
+<h1>Ask AI a Question</h1>
+    <input type="text" id="promptInput" placeholder="Ask something about AI..." />
+    <button id="askButton">Ask</button>
+    <h2>AI Response:</h2>
+    <div id="response"></div>
+document.getElementById('askButton').addEventListener('click', async () => {
+    const prompt = document.getElementById('promptInput').value;
+
+    try {
+        const response = await fetch('/api/ai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            document.getElementById('response').textContent = data.response;
+        } else {
+            document.getElementById('response').textContent = "Error: " + data.error;
+        }
+    } catch (error) {
+        document.getElementById('response').textContent = "An error occurred: " + error.message;
+    }
+});
