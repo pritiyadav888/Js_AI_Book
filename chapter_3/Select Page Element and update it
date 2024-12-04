@@ -1,0 +1,13 @@
+    <h1 id="heading">Hello, World!</h1>
+    <button class="btn">Change Text</button>
+    <script>
+        // Select the DOM element with the ID 'heading'
+        const h1Element = document.querySelector('#heading');
+        // Select the button element
+        const btnElement = document.querySelector('.btn');
+        // Add an event listener to the button to update the text content when clicked
+        btnElement.addEventListener('click', function () {
+            // Change the content of the heading
+            h1Element.textContent = "You clicked the button!";
+        });
+    </script>
