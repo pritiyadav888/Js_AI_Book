@@ -1,8 +1,6 @@
 import fs from 'fs';
 import Papa from 'papaparse';
-import brain from 'brain.js'; // Use the default import for CommonJS module
-
-const { NeuralNetwork } = brain; // Destructure NeuralNetwork
+import brain from 'brain.js';
 
 // --- Load and Preprocess Data ---
 let songs;
@@ -36,36 +34,38 @@ if (songs.some(song => !song.Genre || song.Genre.trim() === '')) {
     process.exit(1);
 }
 
-// --- Calculate Energy ---
-function calculateEnergy(duration) {
+// --- Calculate relativeDuration ---
+function calculateRelativeDuration(duration) {
     return (typeof duration === 'number' && duration >= 0) ? Math.min(duration / 300, 1) : 0.5;
 }
 
-// Add calculated energy to each song
+// Add calculated relativeDuration to each song
 songs.forEach(song => {
-    song.energy = calculateEnergy(song.Duration);
+    song.relativeDuration = calculateRelativeDuration(song.Duration);
 });
 
 // --- Normalize Values ---
 function normalize(value, min, max) {
     if (min === max) return 0.5; // Avoid division by zero
-    return Math.max(0, Math.min(1, (value - min) / (max - min))); // Clamp to [0,1]
+    return Math.max(0, Math.min(1, (value - min) / (max - min)));
 }
 
 // --- Prepare Training Data ---
+// Filter genres to only include Rock and Classical
+songs = songs.filter(song => song.Genre === "Rock" || song.Genre === "Classical");
 const uniqueGenres = [...new Set(songs.map(song => song.Genre))];
 console.log("Unique Genres Detected:", uniqueGenres);
 
 const trainingData = songs.map(song => ({
     input: {
         duration: song.Duration,
-        energy: song.energy
+        relativeDuration: song.relativeDuration
     },
     output: { [song.Genre]: 1 } // One-hot encoded output
 }));
 
 // --- Configure and Train Neural Network ---
-const net = new NeuralNetwork({
+const net = new brain.NeuralNetwork({
     hiddenLayers: [10],
     activation: 'sigmoid'
 });
@@ -81,28 +81,30 @@ console.log("Training complete!");
 
 // Get min and max values for normalization
 const durations = songs.map(s => s.Duration);
-const energies = songs.map(s => s.energy);
+const relativeDurations = songs.map(s => s.relativeDuration);
 const durationMin = Math.min(...durations);
 const durationMax = Math.max(...durations);
-const energyMin = Math.min(...energies);
-const energyMax = Math.max(...energies);
+const relativeDurationMin = Math.min(...relativeDurations);
+const relativeDurationMax = Math.max(...relativeDurations);
 
 // --- Predict Genre ---
-function predictGenre(duration, energy) {
-    console.log("Inputs -> Duration:", duration, "Energy:", energy);
+function predictGenre(duration, relativeDuration) {
+    console.log("Inputs -> Duration:", duration, "Relative Duration:", relativeDuration);
 
     const normalizedDuration = normalize(duration, durationMin, durationMax);
-    const normalizedEnergy = normalize(energy, energyMin, energyMax);
+    const normalizedRelativeDuration = normalize(relativeDuration, relativeDurationMin, relativeDurationMax);
 
-    console.log("Normalized Inputs -> Duration:", normalizedDuration, "Energy:", normalizedEnergy);
+    console.log("Normalized Inputs -> Duration:", normalizedDuration, "Relative Duration:", normalizedRelativeDuration);
 
-    const output = net.run({ duration: normalizedDuration, energy: normalizedEnergy });
+    const output = net.run({ duration: normalizedDuration, relativeDuration: normalizedRelativeDuration }); // Use relativeDuration here
     console.log("Prediction Output:", output);
 
     const genreProbabilities = Object.entries(output).sort(([, a], [, b]) => b - a);
     if (genreProbabilities.length > 0) {
         const [predictedGenre, confidence] = genreProbabilities[0];
+
         console.log(`Predicted Genre: ${predictedGenre}, Confidence: ${confidence.toFixed(2)}`);
+        console.log(`Prediction Probabilities:`, Object.entries(output).map(([genre, probability]) => `${genre}: ${probability.toFixed(2)}`).join(', '));
     } else {
         console.log("No genres predicted.");
     }
@@ -111,4 +113,4 @@ function predictGenre(duration, energy) {
 // --- Example Predictions ---
 predictGenre(180, 0.7);
 predictGenre(250, 0.9);
-predictGenre(120, 0.3);
+predictGenre(120, 0.3); 

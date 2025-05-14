@@ -1,0 +1,61 @@
+export const restaurants = [
+    "Cozy Italian bistro with outdoor seating and homemade pasta.",
+    "Trendy sushi bar with modern decor and a lively atmosphere.",
+    "Classic French restaurant with indoor dining and fine wines.",
+    "Charming trattoria offering alfresco dining and vegan Italian dishes.",
+    "Rustic American steakhouse with outdoor patio and fire pits.",
+    "Modern tapas bar with a rooftop terrace and signature cocktails.",
+    "Authentic Indian curry house with a family-friendly ambiance.",
+    "Fusion bistro with indoor and outdoor seating and unique menu items.",
+    "Traditional Greek taverna serving fresh seafood and mezze.",
+    "Sleek Korean BBQ joint with individual grills and contemporary decor.",
+    "Casual Mexican taqueria with colorful murals and street tacos.",
+    "Farm-to-table café with vegan and gluten-free options.",
+    "Upscale seafood restaurant with ocean views and craft cocktails.",
+    "Romantic French café with candlelit tables and live music.",
+    "Trendy vegan eatery with plant-based sushi and artisanal desserts.",
+    "Lively Brazilian steakhouse with all-you-can-eat meat skewers.",
+    "Coastal seafood shack with picnic tables and fresh oysters.",
+    "Eclectic food hall with diverse street food vendors.",
+    "Chic wine bar with charcuterie boards and live jazz.",
+    "Modern Italian trattoria with handmade pasta and wood-fired pizza.",
+    "Laid-back burger joint with arcade games and milkshakes.",
+    "Dimly lit cocktail lounge with vintage decor and mixologists.",
+    "Family-friendly diner with classic American comfort food.",
+    "Pan-Asian fusion café with bubble tea and poke bowls.",
+    "Open-air Caribbean grill with tropical drinks and reggae music.",
+    "Elegant sushi and sake bar with minimalist design.",
+    "Rustic BBQ pit with smoked meats and cornbread.",
+    "French bistro with outdoor terrace and live accordion music.",
+    "Mediterranean café with hummus platters and fresh falafel.",
+    "Modern steakhouse with Wagyu beef and aged whiskey.",
+    "Cozy coffee shop with local art and freshly baked pastries.",
+    "Italian wine cellar with brick walls and candlelit tables.",
+    "Family-run Indian restaurant with classic curries and naan.",
+    "Upscale brunch spot with avocado toast and bottomless mimosas.",
+    "Dim sum parlor with rolling carts and traditional Chinese tea.",
+    "Farmhouse-style eatery with organic produce and craft beers.",
+    "Modern Mexican cantina with rooftop views and margaritas.",
+    "Beachfront seafood shack with fried clams and lobster rolls.",
+    "Eclectic fusion restaurant with seasonal tasting menus.",
+    "Intimate tapas bar with flamenco nights and sangria.",
+    "Retro diner with jukebox and classic milkshakes.",
+    "Stylish wine and cheese bar with curated flights.",
+    "Rustic pizza joint with wood-fired ovens and local brews.",
+    "Trendy ramen house with open kitchen and sake pairings.",
+    "Historic steakhouse with a speakeasy vibe and prime cuts.",
+    "Contemporary French patisserie with macarons and pastries.",
+    "Lively Irish pub with craft beers and live folk music.",
+    "Family-friendly pancake house with all-day breakfast.",
+    "Vegan burger shack with soy patties and kale chips.",
+    "Classic seafood restaurant with a raw bar and lobster tanks.",
+    "Sleek sushi lounge with neon lights and techno music."
+];
+
+export const DEFAULT_QUERY = "Italian restaurant with outdoor seating";
+
+export const getRandomQuery = () => {
+    const randomIndex = Math.floor(Math.random() * restaurants.length);
+    console.log(`SharedData: Using random query: "${restaurants[randomIndex]}"`);
+    return restaurants[randomIndex];
+};

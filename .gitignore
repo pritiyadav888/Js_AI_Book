@@ -6,3 +6,10 @@ node_modules/
 
 # Mac system files
 .DS_Store
+
+# Ignore lock files
+yarn.lock
+package-lock.json
+
+.idea/
+.vscode/

@@ -1,6 +1,10 @@
-import * as fs from 'node:fs';
+import fs from 'fs';
 import Papa from 'papaparse';
 import { DBSCAN } from 'density-clustering';
+import { Chart, registerables } from 'chart.js';
+import { createCanvas } from 'canvas';
+
+Chart.register(...registerables);
 
 const CSV_FILE_PATH = './datasets/unsupervised_Song_Dataset.csv';
 
@@ -53,14 +57,14 @@ console.log("Noise Points (Outliers):", noise);
 function describeCluster(clusterIndex, cluster) {
     const songsInCluster = cluster.map(index => songs[index]);
     if (songsInCluster.length === 0) {
-        console.log(`Cluster ${clusterIndex}: Empty`); //Fixed this line
+        console.log(`Cluster ${clusterIndex}: Empty`);
         return;
     }
 
     const avgDuration = songsInCluster.reduce((sum, song) => sum + song.Duration, 0) / songsInCluster.length;
     const avgEnergy = songsInCluster.reduce((sum, song) => sum + song.energy, 0) / songsInCluster.length;
     const releaseYears = songsInCluster.map(song => song.ReleaseYear);
-    console.log(`Cluster ${clusterIndex}: Songs - ${songsInCluster.length}, Avg Duration - ${avgDuration.toFixed(2)}, Avg Energy - ${avgEnergy.toFixed(2)}, Release Years: [${releaseYears.join(', ')}]`); //Fixed this line
+    console.log(`Cluster ${clusterIndex}: Songs - ${songsInCluster.length}, Avg Duration - ${avgDuration.toFixed(2)}, Avg Energy - ${avgEnergy.toFixed(2)}, Release Years: [${releaseYears.join(', ')}]`);
 }
 
 clusters.forEach((cluster, index) => describeCluster(index, cluster));

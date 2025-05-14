@@ -2,6 +2,7 @@ import { loadDataset } from './q_learning_core.js';
 import { runQLearning } from './q_learning_core.js';
 import { analyzeQTable, evaluatePerformance } from './q_learning_core.js';
 import { generateRewardChart } from './q_learning_visual.js';
+import { generateQTableHeatmap } from './q_learning_visual.js';
 
 // Define dataset path
 const DATASET_PATH = '../datasets/reinforcement_data.csv';
@@ -25,6 +26,8 @@ async function main() {
 
     console.log('\nGenerating reward chart...');
     generateRewardChart(cumulativeRewards, 'cumulative_reward_chart.png');
+    generateQTableHeatmap(qTable, 'qtable_heatmap.png');
+
 
     console.log('Q-learning completed successfully.');
 }
